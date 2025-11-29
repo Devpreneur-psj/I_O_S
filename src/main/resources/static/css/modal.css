@@ -1,0 +1,256 @@
+/* 공통 모달 스타일 */
+
+.common-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.common-modal.show {
+    display: flex;
+}
+
+.common-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+.common-modal-content {
+    position: relative;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 10001;
+    animation: slideIn 0.3s ease;
+    transition: transform 0.1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.common-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.2);
+}
+
+.common-modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #A8E6CF;
+    margin: 0;
+}
+
+.common-modal-close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.common-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.common-modal-body {
+    padding: 25px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+.common-modal-message {
+    font-size: 16px;
+    margin: 0;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.common-modal-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.common-modal-input:focus {
+    border-color: #A8E6CF;
+    box-shadow: 0 0 10px rgba(168, 230, 207, 0.3);
+}
+
+.common-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 25px;
+    border-top: 2px solid rgba(168, 230, 207, 0.2);
+}
+
+.common-modal-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.common-modal-btn-primary {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.3), rgba(135, 206, 235, 0.3));
+    border: 2px solid rgba(168, 230, 207, 0.5);
+    color: #A8E6CF;
+}
+
+.common-modal-btn-primary:hover {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.5), rgba(135, 206, 235, 0.5));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(168, 230, 207, 0.3);
+}
+
+.common-modal-btn-secondary {
+    background: rgba(100, 100, 100, 0.3);
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.common-modal-btn-secondary:hover {
+    background: rgba(100, 100, 100, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(100, 100, 100, 0.3);
+}
+
+/* 타입별 스타일 */
+.common-modal.modal-success .common-modal-title {
+    color: #4CAF50;
+}
+
+.common-modal.modal-success .common-modal-btn-primary {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(56, 142, 60, 0.3));
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #4CAF50;
+}
+
+.common-modal.modal-success .common-modal-btn-primary:hover {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.5), rgba(56, 142, 60, 0.5));
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.common-modal.modal-error .common-modal-title {
+    color: #f44336;
+}
+
+.common-modal.modal-error .common-modal-btn-primary {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.3), rgba(198, 40, 40, 0.3));
+    border-color: rgba(244, 67, 54, 0.5);
+    color: #f44336;
+}
+
+.common-modal.modal-error .common-modal-btn-primary:hover {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.5), rgba(198, 40, 40, 0.5));
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+}
+
+.common-modal.modal-warning .common-modal-title {
+    color: #FF9800;
+}
+
+.common-modal.modal-warning .common-modal-btn-primary {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.3), rgba(245, 124, 0, 0.3));
+    border-color: rgba(255, 152, 0, 0.5);
+    color: #FF9800;
+}
+
+.common-modal.modal-warning .common-modal-btn-primary:hover {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.5), rgba(245, 124, 0, 0.5));
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+}
+
+.common-modal.modal-info .common-modal-title {
+    color: #2196F3;
+}
+
+.common-modal.modal-info .common-modal-btn-primary {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.3), rgba(25, 118, 210, 0.3));
+    border-color: rgba(33, 150, 243, 0.5);
+    color: #2196F3;
+}
+
+.common-modal.modal-info .common-modal-btn-primary:hover {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.5), rgba(25, 118, 210, 0.5));
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+    .common-modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .common-modal-title {
+        font-size: 18px;
+    }
+    
+    .common-modal-message {
+        font-size: 14px;
+    }
+    
+    .common-modal-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+

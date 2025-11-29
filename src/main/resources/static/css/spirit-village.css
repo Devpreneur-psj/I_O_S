@@ -1,0 +1,944 @@
+/* 정령의 마을 페이지 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.spirit-village-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/Village_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.magical-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    padding: 20px;
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.village-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-radius: 15px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #A8E6CF, #87CEEB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* 기존 스타일 제거 - 정령들이 배경 위를 돌아다니므로 그리드 레이아웃 불필요 */
+
+.spirit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.spirit-header h3 {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.spirit-type-badge {
+    background: rgba(168, 230, 207, 0.2);
+    border: 1px solid rgba(168, 230, 207, 0.5);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: rgba(168, 230, 207, 0.9);
+}
+
+.spirit-stats {
+    margin-bottom: 15px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-value {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+.spirit-status {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.status-item {
+    margin-bottom: 10px;
+}
+
+.status-item:last-child {
+    margin-bottom: 0;
+}
+
+.status-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.status-value {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.status-bar {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.status-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.status-fill.happiness {
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+}
+
+.status-fill.hunger {
+    background: linear-gradient(90deg, #87CEEB, #4682B4);
+}
+
+.status-fill.energy {
+    background: linear-gradient(90deg, #98FB98, #32CD32);
+}
+
+.status-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.spirit-abilities {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(20, 30, 40, 0.5) 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* 육각형 스테이터스 차트 */
+.hexagon-stats-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.hexagon-stats-chart {
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    overflow: visible;
+}
+
+.hexagon-grid polygon {
+    fill: none;
+    stroke: rgba(135, 206, 235, 0.15);
+    stroke-width: 1;
+}
+
+.hexagon-bg {
+    stroke: rgba(135, 206, 235, 0.3);
+    stroke-width: 1.5;
+}
+
+.hexagon-bg-80 {
+    stroke: rgba(135, 206, 235, 0.25);
+    stroke-width: 1;
+}
+
+.hexagon-bg-60 {
+    stroke: rgba(135, 206, 235, 0.2);
+    stroke-width: 1;
+}
+
+.hexagon-bg-40 {
+    stroke: rgba(135, 206, 235, 0.15);
+    stroke-width: 1;
+}
+
+.hexagon-bg-20 {
+    stroke: rgba(135, 206, 235, 0.1);
+    stroke-width: 1;
+}
+
+.hexagon-stats-fill {
+    filter: drop-shadow(0 0 6px rgba(135, 206, 235, 0.5));
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hexagon-stats-border {
+    pointer-events: none;
+    filter: drop-shadow(0 0 2px rgba(135, 206, 235, 0.4));
+}
+
+.hexagon-labels text {
+    font-size: 11px;
+    fill: rgba(255, 255, 255, 0.95);
+    text-anchor: middle;
+    font-weight: 600;
+    pointer-events: none;
+    text-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(168, 230, 207, 0.4);
+    letter-spacing: 0.3px;
+}
+
+.stat-label {
+    font-size: 11px !important;
+    fill: rgba(255, 255, 255, 0.95) !important;
+}
+
+.stat-value-text {
+    font-size: 10px !important;
+    fill: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500 !important;
+}
+
+.stat-dot {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+}
+
+.spirit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(168, 230, 207, 0.2);
+    border: 1px solid rgba(168, 230, 207, 0.5);
+    border-radius: 8px;
+    color: rgba(168, 230, 207, 0.9);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.action-btn:not(:disabled):hover {
+    background: rgba(168, 230, 207, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.3);
+}
+
+.training-btn {
+    background: rgba(135, 206, 235, 0.2);
+    border-color: rgba(135, 206, 235, 0.5);
+    color: rgba(135, 206, 235, 0.9);
+}
+
+.training-btn:not(:disabled):hover {
+    background: rgba(135, 206, 235, 0.3);
+    box-shadow: 0 4px 12px rgba(135, 206, 235, 0.3);
+}
+
+.item-btn {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+    color: rgba(255, 215, 0, 0.9);
+}
+
+.item-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.competition-btn {
+    background: rgba(255, 99, 71, 0.2);
+    border-color: rgba(255, 99, 71, 0.5);
+    color: rgba(255, 99, 71, 0.9);
+}
+
+.competition-btn:not(:disabled):hover {
+    background: rgba(255, 99, 71, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+}
+
+/* 활성 이벤트 섹션 */
+/* 현재 시간 정보 */
+.game-time-info {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 150;
+    min-width: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.current-time-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-label, .weather-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+.time-value, .weather-value {
+    color: #A8E6CF;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.active-events {
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.events-title {
+    font-size: 18px;
+    color: rgba(255, 215, 0, 0.9);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.event-icon {
+    font-size: 24px;
+}
+
+.event-info {
+    flex: 1;
+}
+
+.event-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4px;
+}
+
+.event-description {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+.event-effect {
+    font-size: 11px;
+    color: rgba(255, 215, 0, 0.8);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.event-card.event-weather {
+    border-color: rgba(135, 206, 235, 0.3);
+}
+
+.event-card.event-disease {
+    border-color: rgba(255, 99, 71, 0.3);
+}
+
+.event-card.event-conflict {
+    border-color: rgba(255, 165, 0, 0.3);
+}
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+/* 정령 상태 모달 */
+.spirit-modal {
+    display: none !important;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.spirit-modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.spirit-modal-content {
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px solid rgba(168, 230, 207, 0.4);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8), 0 0 60px rgba(168, 230, 207, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    pointer-events: auto;
+    transition: transform 0.1s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.spirit-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 1002;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto !important;
+    user-select: none;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.spirit-modal-close:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.spirit-modal-close:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+/* 모달 내부 스타일 (기존 spirit-card 스타일 재사용) */
+.spirit-card {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.spirit-card:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.empty-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    z-index: 150;
+}
+
+.create-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.3), rgba(135, 206, 235, 0.3));
+    border: 2px solid rgba(168, 230, 207, 0.5);
+    border-radius: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.create-btn:hover {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.5), rgba(135, 206, 235, 0.5));
+    transform: translateY(-2px);
+}
+
+.back-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 150;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.back-link {
+    color: rgba(168, 230, 207, 0.9);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: rgba(135, 206, 235, 1);
+}
+
+/* 정령들이 돌아다니는 영역 */
+.spirit-walking-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.spirit-walker {
+    position: absolute;
+    cursor: grab;
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 100;
+    transition: transform 0.3s ease;
+    /* 부모 요소는 위치만 변경, 반전은 이미지에만 적용 */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.spirit-walker:active {
+    cursor: grabbing;
+}
+
+.spirit-walker:hover {
+    transform: scale(1.2) !important;
+    filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.8));
+    z-index: 200;
+}
+
+/* hover 시에도 이름은 정상 방향 유지 */
+.spirit-walker:hover .spirit-walker-name {
+    transform: translateX(-50%) scaleX(1) !important;
+    -webkit-transform: translateX(-50%) scaleX(1) !important;
+}
+
+.spirit-walker-image {
+    width: 80px !important;
+    height: 80px !important;
+    max-width: 80px !important;
+    max-height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+    object-fit: contain !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+    display: block !important;
+    position: relative;
+    transform-origin: center center; /* 이미지 중심을 기준으로 반전 */
+    --flip-direction: 1; /* 기본값: 정방향 */
+    animation: float 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) scaleX(var(--flip-direction, 1));
+    }
+    50% {
+        transform: translateY(-10px) scaleX(var(--flip-direction, 1));
+    }
+}
+
+.spirit-walker-name {
+    position: absolute;
+    top: 65px; /* 이미지 높이(60px) + 여백(5px) */
+    left: 50%;
+    transform: translateX(-50%) scaleX(1) !important;
+    -webkit-transform: translateX(-50%) scaleX(1) !important;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.9),
+        0 0 5px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    display: inline-block;
+    /* 항상 정상 방향 유지 - 부모의 transform에 영향받지 않음 */
+    transform-origin: center center;
+    /* 부모의 transform에 영향받지 않도록 isolation */
+    isolation: isolate;
+    will-change: transform;
+    z-index: 101;
+}
+
+/* 말풍선 스타일 */
+.spirit-speech-bubble {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) scaleX(1) !important;
+    margin-bottom: 10px;
+    z-index: 200;
+    pointer-events: all;
+    animation: bubbleAppear 0.3s ease-out;
+    max-width: 200px;
+    min-width: 120px;
+}
+
+.spirit-speech-bubble.show {
+    display: block;
+}
+
+@keyframes bubbleAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px) scale(0.8) scaleX(1) !important;
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1) scaleX(1) !important;
+    }
+}
+
+.speech-bubble-content {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    word-wrap: break-word;
+    white-space: normal;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.speech-bubble-content:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 
+        0 6px 16px rgba(0, 0, 0, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.speech-bubble-tail {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* 행동 불가 상태 (빛의 정령, 어둠의 정령 1차 진화 중) */
+.spirit-walker.spirit-cocoon {
+    cursor: pointer !important;
+    animation: cocoon-pulse 2s ease-in-out infinite;
+}
+
+.spirit-walker.spirit-cocoon .spirit-cocoon-image {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+@keyframes cocoon-pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+.spirit-walker.spirit-inactive {
+    opacity: 0.7;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.spirit-walker.spirit-inactive .spirit-walker-image {
+    animation: none; /* float 애니메이션 제거 */
+    filter: grayscale(30%) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* 상호작용 스타일 */
+.spirit-walker.spirit-falling {
+    animation: fallDown 0.5s ease-out forwards;
+}
+
+@keyframes fallDown {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    50% {
+        transform: rotate(90deg) translateY(20px);
+    }
+    100% {
+        transform: rotate(90deg) translateY(20px);
+    }
+}
+
+.spirit-walker.spirit-playing {
+    animation: playBounce 0.6s ease-in-out infinite;
+}
+
+@keyframes playBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-10px) scale(1.1);
+    }
+}
+
+.spirit-walker.spirit-fighting {
+    animation: fightShake 0.2s ease-in-out infinite;
+}
+
+@keyframes fightShake {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-5px) rotate(-5deg);
+    }
+    75% {
+        transform: translateX(5px) rotate(5deg);
+    }
+}
+
+.spirit-walker.spirit-talking {
+    animation: talkBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes talkBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* 상호작용 말풍선 */
+.interaction-bubble {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #1a1a1a;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: interactionBubbleAppear 0.3s ease-out;
+    pointer-events: none;
+}
+
+.interaction-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(255, 255, 255, 0.95);
+}
+
+@keyframes interactionBubbleAppear {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+

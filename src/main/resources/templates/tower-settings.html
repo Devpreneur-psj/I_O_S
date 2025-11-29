@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사서의 탑 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/tower-settings.css?v=1}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="settings-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="settings-particles"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <div class="settings-header">
+                <h1 class="title">⚙️ 사서의 탑</h1>
+                <p class="subtitle">게임 환경을 설정하세요</p>
+            </div>
+
+            <!-- 설정 폼 -->
+            <div class="settings-form-container">
+                <form id="settingsForm" class="settings-form">
+                    <!-- 사운드 설정 -->
+                    <div class="settings-section">
+                        <h2 class="section-title">🔊 사운드 설정</h2>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="soundEnabled" class="setting-label">효과음</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="soundEnabled" name="soundEnabled" 
+                                           th:checked="${soundEnabled}" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="soundVolume" class="setting-label">효과음 볼륨</label>
+                                <span class="volume-value" id="soundVolumeValue" th:text="${soundVolume}">70</span>%
+                            </div>
+                            <input type="range" id="soundVolume" name="soundVolume" 
+                                   class="volume-slider" min="0" max="100" 
+                                   th:value="${soundVolume}" value="70">
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="musicEnabled" class="setting-label">배경음악</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="musicEnabled" name="musicEnabled" 
+                                           th:checked="${musicEnabled}" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="musicVolume" class="setting-label">배경음악 볼륨</label>
+                                <span class="volume-value" id="musicVolumeValue" th:text="${musicVolume}">50</span>%
+                            </div>
+                            <input type="range" id="musicVolume" name="musicVolume" 
+                                   class="volume-slider" min="0" max="100" 
+                                   th:value="${musicVolume}" value="50">
+                        </div>
+                    </div>
+
+                    <!-- 알림 설정 -->
+                    <div class="settings-section">
+                        <h2 class="section-title">🔔 알림 설정</h2>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="notificationsEnabled" class="setting-label">알림 받기</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="notificationsEnabled" name="notificationsEnabled" 
+                                           th:checked="${notificationsEnabled}" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <small class="setting-hint">게임 내 이벤트 및 업데이트 알림을 받습니다.</small>
+                        </div>
+                    </div>
+
+                    <!-- 게임 설정 -->
+                    <div class="settings-section">
+                        <h2 class="section-title">🎮 게임 설정</h2>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label-row">
+                                <label for="autoSaveEnabled" class="setting-label">자동 저장</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoSaveEnabled" name="autoSaveEnabled" 
+                                           th:checked="${autoSaveEnabled}" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <small class="setting-hint">게임 진행 상황을 자동으로 저장합니다.</small>
+                        </div>
+                    </div>
+
+                    <!-- 로그 관리 -->
+                    <div class="settings-section">
+                        <h2 class="section-title">📋 로그 관리</h2>
+                        
+                        <div class="setting-item">
+                            <p class="setting-hint">게임 실행 로그를 확인하고 관리할 수 있습니다.</p>
+                            <button type="button" class="log-viewer-btn" onclick="window.location.href='/logs/view'">
+                                📋 로그 뷰어 열기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 버튼 -->
+                    <div class="settings-actions">
+                        <button type="submit" class="save-btn">💾 설정 저장</button>
+                        <button type="button" class="cancel-btn" onclick="window.location.href='/world'">← 월드맵으로</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/tower-settings.js?v=1}"></script>
+</body>
+</html>
+

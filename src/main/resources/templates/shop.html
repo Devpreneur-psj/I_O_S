@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정령 상점 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/shop.css?v=2}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="shop-container">
+        <!-- 헤더 -->
+        <div class="shop-header">
+            <button class="back-btn" onclick="window.location.href='/world'">← 뒤로</button>
+            <h1>🛒 정령 상점</h1>
+            <div class="user-money">
+                <span class="money-label">보유 금액:</span>
+                <span class="money-amount" id="userMoney">0</span>
+                <span class="money-unit">골드</span>
+            </div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="tab-menu">
+            <button class="tab-btn active" data-tab="shop">상점</button>
+            <button class="tab-btn" data-tab="inventory">인벤토리</button>
+        </div>
+
+        <!-- 상점 탭 -->
+        <div id="shopTab" class="tab-content active">
+            <div class="shop-filters">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="FOOD">음식</button>
+                <button class="filter-btn" data-filter="MEDICINE">의약품</button>
+                <button class="filter-btn" data-filter="TOY">장난감</button>
+                <button class="filter-btn" data-filter="VITAMIN">비타민</button>
+                <button class="filter-btn" data-filter="STAT_BOOST">능력치 향상</button>
+                <button class="filter-btn" data-filter="ENERGY">에너지</button>
+                <button class="filter-btn" data-filter="LIFESPAN_EXTENSION">수명 연장</button>
+            </div>
+            <div class="items-grid" id="shopItemsGrid">
+                <!-- 아이템들이 여기에 동적으로 추가됨 -->
+            </div>
+        </div>
+
+        <!-- 인벤토리 탭 -->
+        <div id="inventoryTab" class="tab-content">
+            <!-- 인벤토리 탭 메뉴 -->
+            <div class="inventory-tabs">
+                <button class="inventory-tab-btn active" data-inventory-tab="all">전체</button>
+                <button class="inventory-tab-btn" data-inventory-tab="FOOD">소비</button>
+                <button class="inventory-tab-btn" data-inventory-tab="TOY">기타</button>
+            </div>
+            
+            <!-- 인벤토리 그리드 (메이플스토리 스타일) -->
+            <div class="inventory-window">
+                <div class="inventory-header">
+                    <span class="inventory-title">ITEM INVENTORY</span>
+                    <button class="inventory-close-btn" onclick="closeInventoryWindow()">✕</button>
+                </div>
+                <div class="inventory-grid" id="inventoryItemsGrid">
+                    <!-- 보유 아이템들이 여기에 동적으로 추가됨 -->
+                </div>
+                <div class="inventory-footer">
+                    <div class="currency-display">
+                        <span class="currency-label">게임 재화:</span>
+                        <span class="currency-value" id="mesoDisplay">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 아이템 툴팁 -->
+            <div id="itemTooltip" class="item-tooltip" style="display: none;">
+                <div class="tooltip-header">
+                    <span class="tooltip-item-name" id="tooltipItemName"></span>
+                </div>
+                <div class="tooltip-status" id="tooltipStatus"></div>
+                <div class="tooltip-description" id="tooltipDescription"></div>
+                <div class="tooltip-effect" id="tooltipEffect"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 구매 모달 -->
+    <div id="purchaseModal" class="modal-overlay">
+        <div class="modal-backdrop" onclick="closePurchaseModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="purchaseItemName">아이템 구매</h2>
+                <button class="modal-close-btn" onclick="closePurchaseModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="purchaseItemDescription"></p>
+                <div class="purchase-controls">
+                    <label>수량:</label>
+                    <input type="number" id="purchaseQuantity" min="1" value="1">
+                    <div class="purchase-total">
+                        총 가격: <span id="purchaseTotalPrice">0</span> 골드
+                    </div>
+                </div>
+                <button class="purchase-btn" onclick="confirmPurchase()">구매하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/shop.js?v=3}"></script>
+</body>
+</html>
+

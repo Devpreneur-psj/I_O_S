@@ -1,0 +1,899 @@
+/* 상점 페이지 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.shop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.back-btn {
+    padding: 10px 20px;
+    background: rgba(168, 230, 207, 0.2);
+    border: 1px solid rgba(168, 230, 207, 0.5);
+    border-radius: 8px;
+    color: #A8E6CF;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(168, 230, 207, 0.3);
+    transform: translateX(-3px);
+}
+
+.shop-header h1 {
+    font-size: 32px;
+    background: linear-gradient(135deg, #A8E6CF, #87CEEB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.user-money {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 10px;
+}
+
+.money-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.money-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.money-unit {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-btn.active {
+    color: #A8E6CF;
+    border-bottom-color: #A8E6CF;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 필터 버튼 */
+.shop-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 230, 207, 0.3);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(168, 230, 207, 0.2);
+    border-color: rgba(168, 230, 207, 0.5);
+}
+
+.filter-btn.active {
+    background: rgba(168, 230, 207, 0.3);
+    border-color: #A8E6CF;
+    color: #A8E6CF;
+}
+
+/* 아이템 그리드 */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* 인벤토리 탭 메뉴 */
+.inventory-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.inventory-tab-btn {
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.inventory-tab-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.inventory-tab-btn.active {
+    color: #A8E6CF;
+    border-bottom-color: #A8E6CF;
+    background: rgba(168, 230, 207, 0.1);
+}
+
+/* 인벤토리 창 (메이플스토리 스타일) */
+.inventory-window {
+    background: linear-gradient(135deg, rgba(40, 40, 60, 0.95) 0%, rgba(30, 30, 50, 0.95) 100%);
+    border: 3px solid #8B7355;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    min-height: 500px;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #8B7355;
+}
+
+.inventory-title {
+    color: #FFD700;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.inventory-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.inventory-close-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* 인벤토리 그리드 (메이플스토리 스타일 - 4x10 그리드) */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    min-height: 400px;
+}
+
+/* 인벤토리 슬롯 */
+.inventory-slot {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #8B7355;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory-slot.empty-slot {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: #5A4A3A;
+    cursor: default;
+}
+
+.inventory-slot.item-slot {
+    background: rgba(30, 30, 50, 0.8);
+    border-color: #A8A080;
+}
+
+.inventory-slot.item-slot:hover {
+    border-color: #FFD700;
+    background: rgba(50, 50, 70, 0.9);
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.slot-icon {
+    font-size: 32px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.slot-quantity {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: #FFD700;
+    font-size: 11px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 인벤토리 푸터 */
+.inventory-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #8B7355;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.currency-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.currency-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.currency-value {
+    color: #FFD700;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* 아이템 툴팁 */
+.item-tooltip {
+    position: fixed;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.98) 0%, rgba(20, 20, 40, 0.98) 100%);
+    border: 2px solid #8B7355;
+    border-radius: 6px;
+    padding: 12px;
+    min-width: 200px;
+    max-width: 300px;
+    z-index: 10000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
+.tooltip-header {
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #8B7355;
+}
+
+.tooltip-item-name {
+    color: #FFD700;
+    font-size: 14px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.tooltip-status {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.tooltip-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.tooltip-effect {
+    color: #A8E6CF;
+    font-size: 11px;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(168, 230, 207, 0.3);
+}
+
+/* 정령 스테이터스 모달용 인벤토리 스타일 */
+.inventory-modal-overlay {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory-modal-overlay.active {
+    display: flex !important;
+}
+
+.inventory-modal-content {
+    background: linear-gradient(135deg, rgba(40, 40, 60, 0.98) 0%, rgba(30, 30, 50, 0.98) 100%);
+    border: 3px solid #8B7355;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.inventory-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #8B7355;
+}
+
+.inventory-modal-header h2 {
+    color: #FFD700;
+    font-size: 20px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    margin: 0;
+}
+
+.inventory-modal-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.inventory-modal-close:hover {
+    background: rgba(255, 0, 0, 0.3);
+    color: #fff;
+}
+
+.inventory-modal-body {
+    position: relative;
+}
+
+#spiritInventoryGrid {
+    min-height: 300px;
+}
+
+.item-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(20, 30, 40, 0.5) 100%);
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(168, 230, 207, 0.6);
+    box-shadow: 0 10px 30px rgba(168, 230, 207, 0.3);
+}
+
+.item-card.inventory {
+    cursor: default;
+}
+
+.item-icon {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.item-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #A8E6CF;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.item-description {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 10px;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+.item-effect {
+    font-size: 11px;
+    color: rgba(168, 230, 207, 0.8);
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background: rgba(168, 230, 207, 0.1);
+    border-radius: 5px;
+}
+
+.item-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(168, 230, 207, 0.2);
+}
+
+.price-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFD700;
+}
+
+.item-quantity {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.buy-btn {
+    padding: 8px 16px;
+    background: rgba(168, 230, 207, 0.3);
+    border: 1px solid rgba(168, 230, 207, 0.5);
+    border-radius: 8px;
+    color: #A8E6CF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.buy-btn:hover {
+    background: rgba(168, 230, 207, 0.5);
+    transform: scale(1.05);
+}
+
+.use-btn {
+    padding: 8px 16px;
+    background: rgba(135, 206, 235, 0.3);
+    border: 1px solid rgba(135, 206, 235, 0.5);
+    border-radius: 8px;
+    color: #87CEEB;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.use-btn:hover {
+    background: rgba(135, 206, 235, 0.5);
+    transform: scale(1.05);
+}
+
+/* 모달 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 30, 40, 0.95) 100%);
+    border: 2px solid rgba(168, 230, 207, 0.5);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 1001;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.modal-header h2 {
+    color: #A8E6CF;
+    font-size: 24px;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.purchase-controls {
+    margin: 20px 0;
+}
+
+.purchase-controls label {
+    display: block;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.purchase-controls input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 230, 207, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.purchase-total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFD700;
+    text-align: center;
+    padding: 15px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.purchase-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.3), rgba(135, 206, 235, 0.3));
+    border: 2px solid rgba(168, 230, 207, 0.5);
+    border-radius: 10px;
+    color: #A8E6CF;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.purchase-btn:hover {
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.5), rgba(135, 206, 235, 0.5));
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(168, 230, 207, 0.3);
+}
+
+/* 인벤토리 탭 메뉴 */
+.inventory-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.inventory-tab-btn {
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.inventory-tab-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.inventory-tab-btn.active {
+    color: #A8E6CF;
+    border-bottom-color: #A8E6CF;
+    background: rgba(168, 230, 207, 0.1);
+}
+
+/* 인벤토리 창 (메이플스토리 스타일) */
+.inventory-window {
+    background: linear-gradient(135deg, rgba(40, 40, 60, 0.95) 0%, rgba(30, 30, 50, 0.95) 100%);
+    border: 3px solid #8B7355;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    min-height: 500px;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #8B7355;
+}
+
+.inventory-title {
+    color: #FFD700;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.inventory-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.inventory-close-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+    color: #fff;
+}
+
+/* 인벤토리 그리드 (메이플스토리 스타일 - 4x10 그리드) */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    min-height: 400px;
+}
+
+/* 인벤토리 슬롯 */
+.inventory-slot {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #8B7355;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory-slot.empty-slot {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: #5A4A3A;
+    cursor: default;
+}
+
+.inventory-slot.item-slot {
+    background: rgba(30, 30, 50, 0.8);
+    border-color: #A8A080;
+}
+
+.inventory-slot.item-slot:hover {
+    border-color: #FFD700;
+    background: rgba(50, 50, 70, 0.9);
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.slot-icon {
+    font-size: 32px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.slot-quantity {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    color: #FFD700;
+    font-size: 11px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 인벤토리 푸터 */
+.inventory-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #8B7355;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.currency-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.currency-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.currency-value {
+    color: #FFD700;
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* 아이템 툴팁 */
+.item-tooltip {
+    position: fixed;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.98) 0%, rgba(20, 20, 40, 0.98) 100%);
+    border: 2px solid #8B7355;
+    border-radius: 6px;
+    padding: 12px;
+    min-width: 200px;
+    max-width: 300px;
+    z-index: 10000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
+.tooltip-header {
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #8B7355;
+}
+
+.tooltip-item-name {
+    color: #FFD700;
+    font-size: 14px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.tooltip-status {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.tooltip-description {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.tooltip-effect {
+    color: #A8E6CF;
+    font-size: 11px;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(168, 230, 207, 0.3);
+}
+

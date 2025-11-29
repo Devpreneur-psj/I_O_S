@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세계수의 심장 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/world-tree.css?v=8}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="world-tree-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="magical-particles"></div>
+        </div>
+
+        <!-- 좌측 상단: 보유 중인 정령의 축복 -->
+        <div class="essence-counter-top">
+            <div class="essence-counter-icon">💫</div>
+            <div class="essence-counter-label">정령의 축복</div>
+            <div class="essence-counter-amount" th:text="${worldTreeInfo.availableEssence}">0</div>
+        </div>
+
+        <!-- 에러/정보 메시지 -->
+        <div th:if="${error != null or message != null}" class="world-tree-message" th:classappend="${error != null} ? 'error-message' : 'info-message'">
+            <div class="message-content">
+                <span class="message-icon" th:if="${error != null}">⚠️</span>
+                <span class="message-icon" th:if="${message != null and error == null}">ℹ️</span>
+                <span class="message-text" th:text="${error != null ? error : message}"></span>
+                <button class="message-close" onclick="this.parentElement.parentElement.style.display='none'">✕</button>
+            </div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <!-- 세계수 심장 크리스탈 -->
+            <div class="heart-crystal">
+                <div class="crystal-core">
+                    <div class="level-inside-crystal">
+                        <div class="level-label-inside">LV.</div>
+                        <div class="level-number-inside" th:text="${worldTreeInfo.currentLevel}">1</div>
+                    </div>
+                </div>
+                <div class="crystal-glow"></div>
+            </div>
+
+
+            <!-- EXP 바 -->
+            <div class="exp-container">
+                <div class="exp-label">
+                    <span class="essence-icon">⭐</span>
+                    <span>정령의 축복</span>
+                </div>
+                <div class="exp-bar-wrapper">
+                    <div class="exp-bar">
+                        <div class="exp-fill" 
+                             th:style="'width: ' + ${worldTreeInfo.expPercentage} + '%'"
+                             th:attr="data-exp=${worldTreeInfo.currentExp}, data-required=${worldTreeInfo.requiredExp}">
+                        </div>
+                    </div>
+                    <div class="exp-text">
+                        <span th:text="${worldTreeInfo.currentExp}">0</span>
+                        <span> / </span>
+                        <span th:text="${worldTreeInfo.requiredExp}">1000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 성장 효과 설명 -->
+            <div class="growth-effect">
+                <div class="effect-label">성장의 메시지</div>
+                <div class="effect-text" th:text="${worldTreeInfo.growthEffect}">
+                    잎사귀가 빛나기 시작한다
+                </div>
+            </div>
+
+            <!-- 정령 생성 기능 (레벨 2 이상) - 항상 DOM에 존재, JavaScript로 표시/숨김 -->
+            <div class="spirit-creation-section" style="display: none;">
+                <a href="/spirit/create" class="spirit-creation-btn">
+                    <span class="btn-icon">✨</span>
+                    <span>정령 생성</span>
+                </a>
+            </div>
+
+            <!-- 부여 버튼 -->
+            <div class="test-buttons">
+                <button class="essence-btn" onclick="grantBlessing(10)">
+                    <span class="btn-icon">💫</span>
+                    <span>10개 부여</span>
+                </button>
+                <button class="essence-btn" onclick="grantAllBlessing()">
+                    <span class="btn-icon">✨</span>
+                    <span>일괄 부여</span>
+                </button>
+            </div>
+
+            <!-- 뒤로가기 버튼 -->
+            <div class="back-button">
+                <a href="/world" class="back-link">← 월드맵으로</a>
+            </div>
+        </div>
+
+        <!-- 오른쪽: 레벨별 기능 리스트 -->
+        <div class="feature-list-container">
+            <div class="feature-list-header">
+                <h3>레벨별 기능</h3>
+            </div>
+            <div class="feature-list-scroll">
+                <div class="feature-list" id="featureList">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 레벨업 애니메이션 오버레이 -->
+        <div id="levelUpOverlay" class="level-up-overlay">
+            <div class="level-up-content">
+                <div class="level-up-title">레벨 업!</div>
+                <div class="level-up-level" id="levelUpLevel">2</div>
+                <div class="level-up-effect" id="levelUpEffect"></div>
+                <div class="level-up-unlock" id="levelUpUnlock" style="display: none;">
+                    <div class="unlock-icon">✨</div>
+                    <div class="unlock-text" id="unlockText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/world-tree.js?v=6}"></script>
+</body>
+</html>
+

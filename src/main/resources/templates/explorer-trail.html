@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>탐험가의 길 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/explorer-trail.css?v=8}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="explorer-trail-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="background-image"></div>
+            <div class="magical-particles"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <!-- 헤더 -->
+            <div class="trail-header">
+                <h1 class="trail-title">🗺️ 탐험가의 길</h1>
+                <p class="trail-subtitle">정령 던전을 탐험하고 보상을 획득하세요</p>
+                <a href="/world" class="back-button">← 월드맵으로</a>
+            </div>
+
+            <!-- 에러 메시지 -->
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+            <!-- 성공 메시지 -->
+            <div th:if="${message}" class="success-message" th:text="${message}"></div>
+
+            <!-- 스테이지 던전 영역 -->
+            <div class="dungeon-stages-container">
+                <div class="stages-info">
+                    <h2>던전 스테이지</h2>
+                    <p class="info-text">각 스테이지를 클리어하여 보상을 획득하세요.</p>
+                </div>
+
+                <!-- 스테이지 그리드 -->
+                <div class="stages-grid" id="stagesGrid">
+                    <div class="stage-card" 
+                         th:each="stage : ${stages}"
+                         th:data-stage-number="${stage.stageNumber}"
+                         th:with="currentProgress=${progressMap != null ? progressMap.get(stage.stageNumber) : null}, 
+                                  prevProgress=${progressMap != null and stage.stageNumber > 1 ? progressMap.get(stage.stageNumber - 1) : null},
+                                  isCurrentCleared=${currentProgress != null and currentProgress.isCleared != null ? currentProgress.isCleared : false},
+                                  isPrevCleared=${prevProgress != null and prevProgress.isCleared != null ? prevProgress.isCleared : false},
+                                  isLocked=${stage.stageNumber > 1 and (prevProgress == null or !isPrevCleared)},
+                                  classValue=${(isCurrentCleared ? 'cleared' : '') + (isLocked ? ' locked' : '')}"
+                         th:classappend="${classValue}"
+                         th:onclick="'selectStage(' + ${stage.stageNumber} + ')'">
+                        <div class="stage-icon" th:switch="${stage.stageNumber}">
+                            <span th:case="1">🌾</span>
+                            <span th:case="2">🌲</span>
+                            <span th:case="3">⛰️</span>
+                            <span th:case="4">🌊</span>
+                            <span th:case="5">🌋</span>
+                            <span th:case="*">🏰</span>
+                        </div>
+                        <div class="stage-number" th:text="'스테이지 ' + ${stage.stageNumber}">스테이지 1</div>
+                        <div class="stage-name" th:text="${stage.stageName}">초원의 던전</div>
+                        <div class="stage-difficulty">
+                            <span th:text="'난이도: ' + ${#strings.repeat('⭐', stage.difficulty != null ? stage.difficulty : 1)}">난이도: ⭐</span>
+                        </div>
+                        <div class="stage-status" th:if="${isCurrentCleared}">
+                            ✅ 클리어
+                        </div>
+                        <div class="stage-status" th:if="${!isCurrentCleared}">
+                            <span th:if="${stage.stageNumber == 1 or isPrevCleared}">🔓 진행 가능</span>
+                            <span th:if="${isLocked}">🔒 잠김</span>
+                        </div>
+                        <div class="stage-reward" th:text="'보상: 경험치 +' + ${stage.expReward != null ? stage.expReward : 0} + ', 골드 +' + ${stage.goldReward != null ? stage.goldReward : 0}">보상: 경험치 +100</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 안내 메시지 -->
+            <div class="info-box">
+                <h3>📋 탐험가의 길 안내</h3>
+                <ul>
+                    <li>각 스테이지는 여러 개의 전투로 구성되어 있습니다.</li>
+                    <li>스테이지를 클리어하면 보상을 획득할 수 있습니다.</li>
+                    <li>이전 스테이지를 클리어해야 다음 스테이지가 열립니다.</li>
+                    <li>보유 중인 모든 정령이 자동으로 던전에 참가합니다.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 전투 애니메이션 화면 -->
+    <div id="battleAnimationModal" class="modal" style="display: none;">
+        <div class="battle-modal-content">
+            <!-- 전투 컨트롤 버튼 -->
+            <div class="battle-controls" id="battleControls">
+                <button id="pauseBtn" class="battle-control-btn">⏸️ 일시정지</button>
+                <button id="resumeBtn" class="battle-control-btn" style="display: none;">▶️ 재개</button>
+                <button id="restartBtn" class="battle-control-btn">🔄 다시하기</button>
+                <button id="exitBtn" class="battle-control-btn">❌ 종료</button>
+            </div>
+            
+            <!-- 던전 배경 -->
+            <div class="dungeon-background">
+                <!-- 플레이어 정령들 (왼쪽, 가로 배치) -->
+                <div class="player-side" id="playerSide">
+                    <!-- 모든 정령이 동적으로 추가됨 -->
+                </div>
+
+                <!-- 몬스터 무리 (오른쪽) -->
+                <div class="enemy-side" id="enemySide">
+                    <!-- 몬스터들이 동적으로 추가됨 -->
+                </div>
+
+                <!-- 스킬 이펙트 컨테이너 -->
+                <div class="skill-effects-container" id="skillEffectsContainer"></div>
+                
+                <!-- 데미지 텍스트 컨테이너 -->
+                <div class="damage-text-container" id="damageTextContainer"></div>
+            </div>
+            
+            <!-- 기술 사용 로그 (투명 배경, 모달 아래) -->
+            <div class="skill-log-container" id="skillLogContainer">
+                <div class="skill-log-title">기술 사용 로그</div>
+                <div class="skill-log-content" id="skillLogContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 전투 결과 모달 -->
+    <div id="battleResultModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="battleResultTitle">전투 결과</h2>
+            <div id="battleResultContent"></div>
+            <button onclick="closeBattleResultModal()">확인</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const spiritsData = /*[[${spirits}]]*/ [];
+        const progressMap = /*[[${progressMap}]]*/ {};
+        /*]]>*/
+    </script>
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/modal-draggable.js}"></script>
+    <script th:src="@{/js/explorer-trail.js?v=15}"></script>
+</body>
+</html>
+

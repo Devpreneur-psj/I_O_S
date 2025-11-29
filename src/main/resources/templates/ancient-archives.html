@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고대 기록실 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/ancient-archives.css?v=1}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="archives-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="archive-particles"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <div class="archives-header">
+                <h1 class="title">📚 고대 기록실</h1>
+                <p class="subtitle">게임의 모든 변경사항을 기록합니다</p>
+            </div>
+
+            <!-- 패치 노트 목록 -->
+            <div class="patch-notes-container">
+                <div class="patch-notes-list" th:each="patch, iterStat : ${patchNotes}">
+                    <div class="patch-note-card" th:classappend="${iterStat.first} ? 'latest' : ''">
+                        <div class="patch-header">
+                            <div class="patch-version">
+                                <span class="version-badge" th:text="${patch.version}">v1.0.0</span>
+                                <span class="version-date" th:text="${patch.date}">2024-01-01</span>
+                            </div>
+                            <h2 class="patch-title" th:text="${patch.title}">패치 제목</h2>
+                        </div>
+                        <div class="patch-content">
+                            <ul class="patch-changes">
+                                <li th:each="change : ${patch.changes}" th:text="${change}">변경사항</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 빈 상태 -->
+                <div class="empty-state" th:if="${patchNotes == null or patchNotes.empty}">
+                    <p>아직 기록된 패치 노트가 없습니다.</p>
+                </div>
+            </div>
+
+            <!-- 뒤로가기 버튼 -->
+            <div class="back-button-container">
+                <button class="back-btn" onclick="window.location.href='/world'">← 월드맵으로</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/ancient-archives.js?v=1}"></script>
+</body>
+</html>
+

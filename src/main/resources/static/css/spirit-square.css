@@ -1,0 +1,513 @@
+/* 정령 광장 페이지 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+.spirit-square-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/Lounge_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.background-image::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.05) 0%,
+        rgba(168, 230, 207, 0.08) 50%,
+        rgba(135, 206, 235, 0.05) 100%
+    );
+    pointer-events: none;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.square-header {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    pointer-events: auto;
+}
+
+.square-header .title {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.current-channel {
+    color: #FFD700;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.btn-change-channel,
+.btn-exit {
+    padding: 8px 16px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    border-radius: 8px;
+    color: #FFD700;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 201;
+    pointer-events: auto;
+}
+
+.btn-change-channel:hover,
+.btn-exit:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-change-channel:active,
+.btn-exit:active {
+    transform: translateY(0);
+}
+
+/* 광장 영역 */
+.square-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: crosshair;
+}
+
+/* 정령 워커 */
+.spirit-walker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 50;
+}
+
+.spirit-walker.my-spirit {
+    z-index: 100;
+    cursor: move;
+}
+
+.spirit-walker .spirit-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    transform-origin: center center;
+    --flip-direction: 1; /* 기본값: 정방향 (오른쪽) */
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+}
+
+.spirit-walker.my-spirit .spirit-image {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+}
+
+/* 위아래로 떠다니는 애니메이션 (정령마을과 동일) */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) scaleX(var(--flip-direction, 1));
+    }
+    50% {
+        transform: translateY(-10px) scaleX(var(--flip-direction, 1));
+    }
+}
+
+.spirit-nickname {
+    margin-top: 5px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transform: translateY(0);
+    transition: transform 0.3s;
+}
+
+.spirit-walker:hover .spirit-nickname {
+    transform: translateY(-5px);
+}
+
+/* 말풍선 스타일 */
+.speech-bubble {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    word-wrap: break-word;
+    white-space: normal;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    animation: bubblePop 0.3s ease;
+    /* 기본 비율 1:3, 최소 높이는 글자에 맞게 */
+    min-width: 80px;
+    max-width: 300px;
+    width: auto;
+    display: inline-block;
+    text-align: center; /* 말풍선 텍스트 중앙 정렬 */
+}
+
+.speech-bubble.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.speech-bubble-content {
+    line-height: 1.4;
+    display: block;
+    /* 기본 비율 1:3 기준으로 너비 계산 */
+    width: 100%;
+    min-width: 60px;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    word-wrap: break-word;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(255, 255, 255, 0.95);
+}
+
+@keyframes bubblePop {
+    0% {
+        transform: translateX(-50%) scale(0.8) translateY(10px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05) translateY(-2px);
+    }
+    100% {
+        transform: translateX(-50%) scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.speech-bubble.hide {
+    animation: bubbleHide 0.3s ease forwards;
+}
+
+@keyframes bubbleHide {
+    0% {
+        transform: translateX(-50%) scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%) scale(0.8) translateY(-10px);
+        opacity: 0;
+    }
+}
+
+.speech-bubble-content {
+    line-height: 1.4;
+}
+
+/* 채팅 영역 */
+.chat-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 400px;
+    max-height: 400px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFD700;
+    font-weight: 600;
+}
+
+.btn-toggle-chat {
+    padding: 5px 10px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    border-radius: 5px;
+    color: #FFD700;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 250px;
+    min-height: 150px;
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    text-align: center !important; /* 채팅 메시지 중앙 정렬 강제 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.message-time {
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 2px;
+    text-align: center !important;
+    width: 100%;
+}
+
+.message-nickname {
+    color: #FFD700;
+    font-weight: 600;
+    margin-bottom: 2px;
+    text-align: center !important;
+    width: 100%;
+}
+
+.message-text {
+    color: #fff;
+    margin-top: 2px;
+    text-align: center !important;
+    width: 100%;
+    word-break: break-word;
+}
+
+.chat-input-container {
+    padding: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    gap: 10px;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+#chatInput:focus {
+    outline: none;
+    border-color: #FFD700;
+}
+
+.chat-input-container button {
+    padding: 8px 16px;
+    background: rgba(255, 215, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    border-radius: 8px;
+    color: #FFD700;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 채널 선택 모달 */
+.channel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.channel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.channel-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.6);
+    transform: translateX(5px);
+}
+
+.channel-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFD700;
+}
+
+.channel-users {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* 정령 선택 모달 */
+.spirit-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.spirit-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.spirit-card:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.6);
+    transform: translateY(-5px);
+}
+
+.spirit-card .spirit-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.spirit-info {
+    color: white;
+}
+
+.spirit-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.spirit-type {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.spirit-level {
+    font-size: 14px;
+    color: #FFD700;
+}
+
+/* 교환 모달 */
+.trade-content {
+    padding: 20px;
+    color: white;
+}
+

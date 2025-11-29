@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구의 정령 마을 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/spirit-village.css}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="spirit-village-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="magical-particles"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <div class="village-header">
+                <h1 class="title">친구의 정령 마을</h1>
+                <p class="subtitle" th:text="'${friendNickname}님의 정령들을 구경하세요'">친구의 정령들을 구경하세요</p>
+                <a href="/friend/list" class="back-button">← 친구 목록으로</a>
+            </div>
+
+            <!-- 친구의 정령 목록 -->
+            <div class="spirits-container" id="spiritsContainer">
+                <!-- 친구의 정령들이 여기에 표시됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/friend-village.js?v=1}"></script>
+    <script>
+        const friendId = [[${friendId}]];
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정령 수련장 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/training-grounds.css}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="training-container">
+        <div class="training-header">
+            <button class="back-btn" onclick="window.location.href='/world'">← 뒤로</button>
+            <h1>🎯 정령 수련장</h1>
+            <p class="subtitle">정령들을 훈련시켜 능력치를 향상시킵니다</p>
+        </div>
+
+        <!-- 정령 선택 -->
+        <div class="section">
+            <h2 class="section-title">정령 선택</h2>
+            <div class="spirit-selector">
+                <select id="spiritSelect" class="spirit-select">
+                    <option value="">정령을 선택하세요</option>
+                    <option th:each="spirit : ${spirits}" 
+                            th:value="${spirit.id}" 
+                            th:data-spirit-type="${spirit.spiritType}"
+                            th:data-evolution-stage="${spirit.evolutionStage}"
+                            th:text="${spirit.name + ' (' + spirit.spiritType + ' Lv.' + spirit.level + ')'}">정령 이름</option>
+                </select>
+            </div>
+            <!-- 선택된 정령 이미지 표시 -->
+            <div id="selectedSpiritPreview" class="spirit-preview" style="display: none; margin-top: 20px; text-align: center;">
+                <img id="selectedSpiritImage" src="" alt="선택된 정령" class="spirit-preview-image">
+                <div id="selectedSpiritName" class="spirit-preview-name"></div>
+            </div>
+        </div>
+
+        <!-- 훈련 정보 -->
+        <div class="section" id="trainingSection" style="display: none;">
+            <h2 class="section-title">훈련 정보</h2>
+            <div class="training-info" id="trainingInfo">
+                <p>정령을 선택하면 훈련을 시작할 수 있습니다.</p>
+                <p class="hint">훈련은 정령의 에너지를 소모하며 능력치를 향상시킵니다.</p>
+            </div>
+            
+            <!-- 훈련 타입 선택 -->
+            <div class="training-selection">
+                <h3 class="training-title">훈련 타입 선택</h3>
+                <div class="training-grid">
+                    <div class="training-card" data-training="ATTACK" onclick="selectTraining('ATTACK', this)">
+                        <div class="training-name">공격 훈련</div>
+                        <div class="training-icon">⚔️</div>
+                        <div class="training-effect">근거리/원거리 공격력 +2</div>
+                        <div class="training-cost">에너지: 20</div>
+                    </div>
+                    <div class="training-card" data-training="DEFENSE" onclick="selectTraining('DEFENSE', this)">
+                        <div class="training-name">방어 훈련</div>
+                        <div class="training-icon">🛡️</div>
+                        <div class="training-effect">근거리/원거리 방어력 +2</div>
+                        <div class="training-cost">에너지: 20</div>
+                    </div>
+                    <div class="training-card" data-training="SPEED" onclick="selectTraining('SPEED', this)">
+                        <div class="training-name">스피드 훈련</div>
+                        <div class="training-icon">💨</div>
+                        <div class="training-effect">스피드 +2</div>
+                        <div class="training-cost">에너지: 20</div>
+                    </div>
+                    <div class="training-card" data-training="BALANCED" onclick="selectTraining('BALANCED', this)">
+                        <div class="training-name">균형 훈련</div>
+                        <div class="training-icon">⚖️</div>
+                        <div class="training-effect">모든 능력치 +1</div>
+                        <div class="training-cost">에너지: 20</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="training-btn" id="trainingBtn" onclick="startTraining()" disabled>훈련 타입을 선택하세요</button>
+        </div>
+
+        <!-- 훈련 결과 -->
+        <div class="section" id="trainingResultSection" style="display: none;">
+            <h2 class="section-title">훈련 결과</h2>
+            <div class="training-result" id="trainingResult">
+                <!-- 훈련 결과가 여기에 표시됨 -->
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/training-grounds.js?v=2}"></script>
+</body>
+</html>
+

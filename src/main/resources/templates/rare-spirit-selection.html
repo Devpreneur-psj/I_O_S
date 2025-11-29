@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>희귀 정령 선택 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/spirit-create.css}">
+    <style>
+        .rare-selection-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .rare-selection-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 
+                0 20px 60px rgba(135, 206, 235, 0.3),
+                0 0 40px rgba(168, 230, 207, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #4A5568;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .congratulations {
+            text-align: center;
+            color: #2D3748;
+            font-size: 16px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border-radius: 15px;
+        }
+
+        .spirit-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .spirit-type-card {
+            position: relative;
+        }
+
+        .spirit-type-card input[type="radio"] {
+            display: none;
+        }
+
+        .spirit-type-card label {
+            display: block;
+            padding: 30px;
+            border: 3px solid #E2E8F0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            text-align: center;
+        }
+
+        .spirit-type-card input[type="radio"]:checked + label {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .spirit-type-card label:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .type-image {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .type-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .type-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2D3748;
+            margin-bottom: 10px;
+        }
+
+        .type-evolution {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .rare-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .name-input {
+            margin: 30px 0;
+        }
+
+        .name-input label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2D3748;
+            font-weight: 600;
+        }
+
+        .name-input input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .name-input input:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .create-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .create-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .error-message {
+            background: #FED7D7;
+            color: #C53030;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="rare-selection-container">
+        <div class="rare-selection-box">
+            <h1 class="title">✨ 희귀 정령 선택 ✨</h1>
+            <p class="subtitle">15레벨 달성 보상</p>
+            
+            <div class="congratulations">
+                <p>축하합니다! 세계수가 15레벨에 도달했습니다!</p>
+                <p>희귀 정령 중 하나를 선택하여 받을 수 있습니다.</p>
+            </div>
+
+            <!-- 에러 메시지 -->
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+            <!-- 희귀 정령 선택 -->
+            <div class="spirit-type-selection" th:if="${rareTypes != null and !rareTypes.empty}">
+                <form th:action="@{/spirit/rare-selection}" method="post">
+                    <div class="spirit-types-grid">
+                        <div class="spirit-type-card" th:each="type : ${rareTypes}">
+                            <input type="radio" 
+                                   name="spiritTypeCode" 
+                                   th:id="${'type-' + type.typeCode}"
+                                   th:value="${type.typeCode}"
+                                   required>
+                            <label th:for="${'type-' + type.typeCode}">
+                                <div class="type-image">
+                                    <img th:src="@{'/images/spirits/step1_' + (type.typeCode == 'LIGHT' ? 'light' : 'dark') + '.png'}" 
+                                         th:alt="${type.typeName}">
+                                </div>
+                                <div class="type-name" th:text="${type.typeName}">빛의 정령</div>
+                                <div class="type-evolution" th:if="${type.firstEvolutionName != null}">
+                                    <span th:text="${type.baseStageName}">빛의 정령</span> → 
+                                    <span th:text="${type.firstEvolutionName}">빛의 덩어리</span> → 
+                                    <span th:text="${type.secondEvolutionName}">디아나</span>
+                                </div>
+                                <div class="type-rare">
+                                    <span class="rare-badge">희귀</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 정령 이름 입력 -->
+                    <div class="name-input">
+                        <label for="spiritName">정령 이름 (선택사항)</label>
+                        <input type="text" 
+                               id="spiritName" 
+                               name="name" 
+                               placeholder="이름을 입력하세요 (미입력 시 기본 이름 사용)"
+                               maxlength="50">
+                    </div>
+
+                    <!-- 선택 버튼 -->
+                    <button type="submit" class="create-button">
+                        <span>희귀 정령 받기</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

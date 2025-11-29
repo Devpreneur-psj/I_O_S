@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구의 숲 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/friend-list.css?v=1}">
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+<body>
+    <div class="friend-list-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="background-image"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <!-- 헤더 -->
+            <div class="friend-header">
+                <h1 class="title">🌳 친구의 숲</h1>
+                <a href="/world" class="back-button">← 월드맵으로</a>
+            </div>
+
+            <!-- 친구 검색 -->
+            <div class="search-section">
+                <h2>친구 찾기</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="아이디 또는 닉네임으로 검색..." 
+                           onkeypress="handleSearchKeyPress(event)">
+                    <button onclick="searchUsers()">검색</button>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- 친구 요청 -->
+            <div class="pending-requests-section" th:if="${pendingRequests != null and !pendingRequests.empty}">
+                <h2>친구 요청</h2>
+                <div class="friend-grid" id="pendingRequests">
+                    <div th:each="user : ${pendingRequests}" class="user-card">
+                        <div class="user-info">
+                            <div class="user-name" th:text="${user.nickname ?: user.username}">닉네임</div>
+                            <div class="user-id" th:text="'@' + ${user.username}">@아이디</div>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-accept" th:onclick="'acceptFriendRequest(' + ${user.id != null ? user.id : 'null'} + ')'">수락</button>
+                            <button class="btn-reject" th:onclick="'rejectFriendRequest(' + ${user.id != null ? user.id : 'null'} + ')'">거절</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 추천 친구 -->
+            <div class="recommended-section" th:if="${recommendedFriends != null and !recommendedFriends.empty}">
+                <h2>추천 친구</h2>
+                <div class="friend-grid" id="recommendedFriends">
+                    <div th:each="user : ${recommendedFriends}" class="user-card">
+                        <div class="user-info">
+                            <div class="user-name" th:text="${user.nickname ?: user.username}">닉네임</div>
+                            <div class="user-id" th:text="'@' + ${user.username}">@아이디</div>
+                        </div>
+                        <button class="btn-add-friend" th:onclick="'sendFriendRequest(' + ${user.id != null ? user.id : 'null'} + ')'">친구 추가</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 내 친구 목록 -->
+            <div class="friends-section" th:if="${friends != null and !friends.empty}">
+                <h2>내 친구</h2>
+                <div class="friend-grid" id="friendsList">
+                    <div th:each="friend : ${friends}" class="friend-card">
+                        <div class="user-info">
+                            <div class="user-name" th:text="${friend.nickname ?: friend.username}">닉네임</div>
+                            <div class="user-id" th:text="'@' + ${friend.username}">@아이디</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="btn-send-gift" th:onclick="'openGiftModal(' + ${friend.id} + ')'">선물하기</button>
+                            <button class="btn-visit-village" th:onclick="'visitFriendVillage(' + ${friend.id} + ')'">마을 방문</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="friends-section" th:if="${friends == null or friends.empty}">
+                <h2>내 친구</h2>
+                <div class="no-friends">친구가 없습니다. 친구를 추가해보세요!</div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/modal.js}"></script>
+    <script th:src="@{/js/modal-draggable.js}"></script>
+    <script th:src="@{/js/friend-list.js?v=1}"></script>
+</body>
+</html>
+

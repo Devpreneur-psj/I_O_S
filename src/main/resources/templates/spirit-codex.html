@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정령 도서관 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/spirit-codex.css?v=5}">
+</head>
+<body>
+    <div class="codex-container">
+        <div class="codex-header">
+            <button class="back-btn" onclick="window.location.href='/world'">← 뒤로</button>
+            <h1>📖 정령 도서관</h1>
+            <p class="subtitle">모든 정령의 정보를 확인할 수 있습니다</p>
+        </div>
+
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${error != null}" class="error-message" style="background: rgba(255, 0, 0, 0.1); border: 2px solid #ff4444; color: #ff4444; padding: 15px; border-radius: 10px; margin: 20px; text-align: center;">
+            <p th:text="${error}">오류가 발생했습니다.</p>
+        </div>
+
+        <!-- 필터 -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all" onclick="filterSpirits('all')">전체</button>
+            <button class="filter-btn" data-filter="common" onclick="filterSpirits('common')">일반</button>
+            <button class="filter-btn" data-filter="rare" onclick="filterSpirits('rare')">희귀</button>
+            <button class="filter-btn" data-filter="owned" onclick="filterSpirits('owned')">소유</button>
+            <button class="filter-btn" data-filter="not-owned" onclick="filterSpirits('not-owned')">미소유</button>
+        </div>
+
+        <div class="spirit-types-grid" id="spiritTypesGrid">
+            <div th:if="${spiritTypes == null or #lists.isEmpty(spiritTypes)}" class="no-spirits" style="text-align: center; padding: 40px; color: rgba(255, 255, 255, 0.7);">
+                <p>등록된 정령 타입이 없습니다.</p>
+            </div>
+            
+            <!-- 각 정령 타입별로 3단계 카드 생성 -->
+            <th:block th:each="type : ${spiritTypes}" th:if="${spiritTypes != null and type != null}">
+                <!-- 1단계 (기본) -->
+                <th:block th:with="stageKey0=${type.typeName + '_0'},isObtained0=${obtainedStageMap != null and type.typeName != null and obtainedStageMap.containsKey(type.typeName + '_0') and obtainedStageMap.get(type.typeName + '_0')}">
+                <div class="spirit-id-card" 
+                     th:attr="data-rare=${type.isRare != null ? type.isRare : false},data-type-name=${type.typeName != null ? type.typeName : ''},data-stage='0',data-owned=${isObtained0}"
+                     th:classappend="${!isObtained0} ? 'not-obtained' : ''">
+                
+                <div class="id-card-header">
+                    <div class="id-card-title">정령 정보 카드 - 1단계</div>
+                    <span class="rare-badge" th:if="${type.isRare}">희귀</span>
+                </div>
+                
+                <div class="id-card-body">
+                    <div class="id-card-left">
+                        <div class="photo-section">
+                            <div class="photo-label">사진</div>
+                            <div class="photo-container" th:classappend="${!isObtained0} ? 'unknown-photo' : ''">
+                                <div th:if="${isObtained0}">
+                                    <img th:if="${type.typeCode == 'FIRE'}" th:src="@{/images/spirits/step1_fire.png}" th:alt="${type.baseStageName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WATER'}" th:src="@{/images/spirits/step1_water.png}" th:alt="${type.baseStageName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WIND'}" th:src="@{/images/spirits/step1_leaf.png}" th:alt="${type.baseStageName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'LIGHT'}" th:src="@{/images/spirits/step1_light.png}" th:alt="${type.baseStageName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'DARK'}" th:src="@{/images/spirits/step1_dark.png}" th:alt="${type.baseStageName}" class="main-photo">
+                                </div>
+                                <div th:unless="${isObtained0}" class="unknown-spirit">
+                                    <div class="unknown-icon">?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="id-card-right">
+                        <div class="info-section">
+                            <div class="info-item">
+                                <div class="info-label">정령 종류</div>
+                                <div class="info-value main-name" th:if="${isObtained0}" th:text="${type.typeName}">정령 타입</div>
+                                <div class="info-value main-name unknown-text" th:unless="${isObtained0}">???</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained0}">
+                                <div class="info-label">단계 이름</div>
+                                <div class="info-value" th:text="${type.baseStageName}">기본</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained0 and type.weakAgainst != null}">
+                                <div class="info-label">약점</div>
+                                <div class="info-value weakness" th:text="${type.weakAgainst}">약점</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained0 and type.strongAgainst != null}">
+                                <div class="info-label">강점</div>
+                                <div class="info-value strength" th:text="${type.strongAgainst}">강점</div>
+                            </div>
+                            
+                            <div class="info-item ownership-item">
+                                <div class="info-label">소유 상태</div>
+                                <div class="info-value">
+                                    <span th:if="${isObtained0}" class="owned">✓ 소유 중</span>
+                                    <span th:unless="${isObtained0}" class="not-owned">미발견</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </th:block>
+                
+                <!-- 2단계 (1차 진화) -->
+                <th:block th:if="${type.firstEvolutionName != null}" th:with="stageKey1=${type.typeName + '_1'},isObtained1=${obtainedStageMap != null and type.typeName != null and obtainedStageMap.containsKey(type.typeName + '_1') and obtainedStageMap.get(type.typeName + '_1')}">
+                <div class="spirit-id-card" 
+                     th:attr="data-rare=${type.isRare != null ? type.isRare : false},data-type-name=${type.typeName != null ? type.typeName : ''},data-stage='1',data-owned=${isObtained1}"
+                     th:classappend="${!isObtained1} ? 'not-obtained' : ''">
+                
+                <div class="id-card-header">
+                    <div class="id-card-title">정령 정보 카드 - 2단계</div>
+                    <span class="rare-badge" th:if="${type.isRare}">희귀</span>
+                </div>
+                
+                <div class="id-card-body">
+                    <div class="id-card-left">
+                        <div class="photo-section">
+                            <div class="photo-label">사진</div>
+                            <div class="photo-container" th:classappend="${!isObtained1} ? 'unknown-photo' : ''">
+                                <div th:if="${isObtained1}">
+                                    <img th:if="${type.typeCode == 'FIRE'}" th:src="@{/images/spirits/step2_fire.png}" th:alt="${type.firstEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WATER'}" th:src="@{/images/spirits/step2_water.png}" th:alt="${type.firstEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WIND'}" th:src="@{/images/spirits/step2_leaf.png}" th:alt="${type.firstEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'LIGHT'}" th:src="@{/images/spirits/step2_light.png}" th:alt="${type.firstEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'DARK'}" th:src="@{/images/spirits/step2_dark.png}" th:alt="${type.firstEvolutionName}" class="main-photo">
+                                </div>
+                                <div th:unless="${isObtained1}" class="unknown-spirit">
+                                    <div class="unknown-icon">?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="id-card-right">
+                        <div class="info-section">
+                            <div class="info-item">
+                                <div class="info-label">정령 종류</div>
+                                <div class="info-value main-name" th:if="${isObtained1}" th:text="${type.typeName}">정령 타입</div>
+                                <div class="info-value main-name unknown-text" th:unless="${isObtained1}">???</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained1}">
+                                <div class="info-label">단계 이름</div>
+                                <div class="info-value" th:text="${type.firstEvolutionName}">1차</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained1 and type.weakAgainst != null}">
+                                <div class="info-label">약점</div>
+                                <div class="info-value weakness" th:text="${type.weakAgainst}">약점</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained1 and type.strongAgainst != null}">
+                                <div class="info-label">강점</div>
+                                <div class="info-value strength" th:text="${type.strongAgainst}">강점</div>
+                            </div>
+                            
+                            <div class="info-item ownership-item">
+                                <div class="info-label">소유 상태</div>
+                                <div class="info-value">
+                                    <span th:if="${isObtained1}" class="owned">✓ 소유 중</span>
+                                    <span th:unless="${isObtained1}" class="not-owned">미발견</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </th:block>
+                
+                <!-- 3단계 (2차 진화) -->
+                <th:block th:if="${type.secondEvolutionName != null}" th:with="stageKey2=${type.typeName + '_2'},isObtained2=${obtainedStageMap != null and type.typeName != null and obtainedStageMap.containsKey(type.typeName + '_2') and obtainedStageMap.get(type.typeName + '_2')}">
+                <div class="spirit-id-card" 
+                     th:attr="data-rare=${type.isRare != null ? type.isRare : false},data-type-name=${type.typeName != null ? type.typeName : ''},data-stage='2',data-owned=${isObtained2}"
+                     th:classappend="${!isObtained2} ? 'not-obtained' : ''">
+                
+                <div class="id-card-header">
+                    <div class="id-card-title">정령 정보 카드 - 3단계</div>
+                    <span class="rare-badge" th:if="${type.isRare}">희귀</span>
+                </div>
+                
+                <div class="id-card-body">
+                    <div class="id-card-left">
+                        <div class="photo-section">
+                            <div class="photo-label">사진</div>
+                            <div class="photo-container" th:classappend="${!isObtained2} ? 'unknown-photo' : ''">
+                                <div th:if="${isObtained2}">
+                                    <img th:if="${type.typeCode == 'FIRE'}" th:src="@{/images/spirits/step3_fire.png}" th:alt="${type.secondEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WATER'}" th:src="@{/images/spirits/step3_water.png}" th:alt="${type.secondEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'WIND'}" th:src="@{/images/spirits/step3_leaf.png}" th:alt="${type.secondEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'LIGHT'}" th:src="@{/images/spirits/step3_light.png}" th:alt="${type.secondEvolutionName}" class="main-photo">
+                                    <img th:if="${type.typeCode == 'DARK'}" th:src="@{/images/spirits/step3_dark.png}" th:alt="${type.secondEvolutionName}" class="main-photo">
+                                </div>
+                                <div th:unless="${isObtained2}" class="unknown-spirit">
+                                    <div class="unknown-icon">?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="id-card-right">
+                        <div class="info-section">
+                            <div class="info-item">
+                                <div class="info-label">정령 종류</div>
+                                <div class="info-value main-name" th:if="${isObtained2}" th:text="${type.typeName}">정령 타입</div>
+                                <div class="info-value main-name unknown-text" th:unless="${isObtained2}">???</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained2}">
+                                <div class="info-label">단계 이름</div>
+                                <div class="info-value" th:text="${type.secondEvolutionName}">2차</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained2 and type.weakAgainst != null}">
+                                <div class="info-label">약점</div>
+                                <div class="info-value weakness" th:text="${type.weakAgainst}">약점</div>
+                            </div>
+                            
+                            <div class="info-item" th:if="${isObtained2 and type.strongAgainst != null}">
+                                <div class="info-label">강점</div>
+                                <div class="info-value strength" th:text="${type.strongAgainst}">강점</div>
+                            </div>
+                            
+                            <div class="info-item ownership-item">
+                                <div class="info-label">소유 상태</div>
+                                <div class="info-value">
+                                    <span th:if="${isObtained2}" class="owned">✓ 소유 중</span>
+                                    <span th:unless="${isObtained2}" class="not-owned">미발견</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </th:block>
+            </th:block>
+        </div>
+        
+        <!-- 은퇴한 정령 기록 섹션 -->
+        <div class="retired-spirits-section" th:if="${retiredSpirits != null and !#lists.isEmpty(retiredSpirits)}">
+            <h2 class="section-title">💀 은퇴한 정령 기록</h2>
+            <div class="retired-spirits-grid">
+                <div class="retired-id-card" th:each="spirit : ${retiredSpirits}">
+                    <div class="id-card-header">
+                        <div class="id-card-title">은퇴 정령 기록</div>
+                    </div>
+                    <div class="id-card-body">
+                        <div class="id-card-left">
+                            <div class="photo-section">
+                                <div class="photo-label">사진</div>
+                                <div class="photo-container">
+                                    <img th:src="@{'/images/spirits/step' + (spirit.evolutionStage == 0 ? '1' : spirit.evolutionStage == 1 ? '2' : '3') + '_' + (spirit.spiritType == '불의 정령' ? 'fire' : spirit.spiritType == '물의 정령' ? 'water' : spirit.spiritType == '풀의 정령' ? 'leaf' : spirit.spiritType == '빛의 정령' ? 'light' : 'dark') + '.png'}" 
+                                         th:alt="${spirit.name}"
+                                         class="main-photo retired-photo"
+                                         onerror="this.src='/images/spirits/step1_fire.png';">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="id-card-right">
+                            <div class="info-section">
+                                <div class="info-item">
+                                    <div class="info-label">정령 이름</div>
+                                    <div class="info-value main-name" th:text="${spirit.name}">정령 이름</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">정령 타입</div>
+                                    <div class="info-value" th:text="${spirit.spiritType}">정령 타입</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">레벨</div>
+                                    <div class="info-value" th:text="${spirit.level}">1</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">친밀도</div>
+                                    <div class="info-value" th:text="${spirit.intimacy}">1</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">나이</div>
+                                    <div class="info-value" th:text="${spirit.age} + '일'">0일</div>
+                                </div>
+                                <div class="info-item" th:if="${spirit.retiredAt != null}">
+                                    <div class="info-label">은퇴일</div>
+                                    <div class="info-value" th:text="${#temporals.format(spirit.retiredAt, 'yyyy-MM-dd HH:mm')}">날짜</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">정령의 축복</div>
+                                    <div class="info-value blessing" th:text="${spirit.intimacy * 10} + '개'">10개</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 전역 변수 정의
+        var userSpiritTypes = /*[[${userSpiritTypeNamesJson}]]*/ [];
+        
+        // 디버깅을 위한 로그
+        console.log('userSpiritTypes:', userSpiritTypes);
+        console.log('userSpiritTypes type:', typeof userSpiritTypes);
+        /*]]>*/
+        
+        // filterSpirits 함수 정의 (전역 스코프)
+        function filterSpirits(filter) {
+            var cards = document.querySelectorAll('.spirit-id-card');
+            var filterBtns = document.querySelectorAll('.filter-btn');
+            
+            // 필터 버튼 활성화 상태 업데이트
+            if (filterBtns && filterBtns.length > 0) {
+                for (var i = 0; i < filterBtns.length; i++) {
+                    var btn = filterBtns[i];
+                    if (btn.getAttribute('data-filter') === filter) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            }
+            
+            if (cards && cards.length > 0) {
+                for (var j = 0; j < cards.length; j++) {
+                    var card = cards[j];
+                    var isRare = card.getAttribute('data-rare') === 'true';
+                    var typeName = card.getAttribute('data-type-name');
+                    var dataOwned = card.getAttribute('data-owned');
+                    // data-owned 속성에서 소유 여부 확인
+                    var isOwned = (dataOwned === 'true');
+                    
+                    var show = false;
+                    
+                    switch (filter) {
+                        case 'all':
+                            show = true;
+                            break;
+                        case 'common':
+                            show = !isRare;
+                            break;
+                        case 'rare':
+                            show = isRare;
+                            break;
+                        case 'owned':
+                            show = isOwned;
+                            break;
+                        case 'not-owned':
+                            show = !isOwned;
+                            break;
+                        default:
+                            show = true;
+                    }
+                    
+                    // 초기 상태로 리셋
+                    card.style.opacity = '';
+                    card.style.transform = '';
+                    
+                    if (show) {
+                        card.style.display = 'block';
+                        // 약간의 지연 후 애니메이션 적용
+                        setTimeout(function(cardElement) {
+                            cardElement.style.opacity = '1';
+                            cardElement.style.transform = 'scale(1)';
+                        }, 10, card);
+                    } else {
+                        // 즉시 숨김 (애니메이션 없이)
+                        card.style.display = 'none';
+                        card.style.opacity = '';
+                        card.style.transform = '';
+                    }
+                }
+            }
+        }
+        
+        // DOM 로드 완료 후 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Spirit Codex page loaded');
+            // 초기 필터: 전체
+            try {
+                if (typeof filterSpirits === 'function') {
+                    filterSpirits('all');
+                } else {
+                    console.error('filterSpirits function not found');
+                }
+            } catch (error) {
+                console.error('Error initializing filter:', error);
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

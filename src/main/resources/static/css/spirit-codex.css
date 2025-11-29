@@ -1,0 +1,448 @@
+/* 정령 도감 스타일 - 주민등록증 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('/images/codex_background.png') center center / cover no-repeat fixed;
+    background-color: #1a1a2e; /* 이미지 로딩 전 배경색 */
+    min-height: 100vh;
+    color: #333;
+    padding: 20px;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 26, 46, 0.4); /* 배경 이미지 위에 어두운 오버레이 */
+    z-index: -1;
+    pointer-events: none;
+}
+
+.codex-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.codex-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 12px 24px;
+    background: rgba(168, 230, 207, 0.2);
+    border: 2px solid rgba(168, 230, 207, 0.5);
+    border-radius: 10px;
+    color: #A8E6CF;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(168, 230, 207, 0.3);
+    transform: translateY(-50%) translateX(-3px);
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.3);
+}
+
+.codex-header h1 {
+    font-size: 48px;
+    background: linear-gradient(135deg, #A8E6CF, #87CEEB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+}
+
+/* 필터 섹션 */
+.filter-section {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 12px 24px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(168, 230, 207, 0.2);
+    border-color: rgba(168, 230, 207, 0.6);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: rgba(168, 230, 207, 0.3);
+    border-color: #A8E6CF;
+    color: #A8E6CF;
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.3);
+}
+
+/* 주민등록증 스타일 그리드 */
+.spirit-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+/* 주민등록증 스타일 카드 */
+.spirit-id-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 3px solid #2c3e50;
+    border-radius: 12px;
+    padding: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.spirit-id-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* 미획득 정령 스타일 */
+.spirit-id-card.not-obtained {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    border-color: #495057;
+    opacity: 0.7;
+}
+
+.spirit-id-card.not-obtained .id-card-body {
+    background: #343a40;
+    color: #adb5bd;
+}
+
+.spirit-id-card.not-obtained .id-card-header {
+    background: linear-gradient(135deg, #1a252f 0%, #0d1117 100%);
+}
+
+.unknown-photo {
+    background: #1a252f !important;
+    border-color: #495057 !important;
+}
+
+.unknown-spirit {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a252f;
+}
+
+.unknown-icon {
+    font-size: 60px;
+    font-weight: 700;
+    color: #6c757d;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.unknown-text {
+    color: #6c757d !important;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+.id-card-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #1a252f;
+}
+
+.id-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.rare-badge {
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+    box-shadow: 0 2px 6px rgba(255, 215, 0, 0.4);
+}
+
+.id-card-body {
+    display: flex;
+    padding: 25px;
+    gap: 25px;
+    background: white;
+}
+
+.id-card-left {
+    flex-shrink: 0;
+    width: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.photo-section {
+    border: 2px solid #2c3e50;
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8f9fa;
+}
+
+.photo-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.photo-container {
+    width: 100px;
+    height: 120px;
+    background: white;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.main-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.retired-photo {
+    filter: grayscale(0.4);
+    opacity: 0.9;
+}
+
+.evolution-preview {
+    border: 2px solid #2c3e50;
+    border-radius: 8px;
+    padding: 10px;
+    background: #f8f9fa;
+}
+
+.preview-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.preview-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preview-stage {
+    display: flex;
+    justify-content: center;
+}
+
+.preview-img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background: white;
+}
+
+.id-card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.info-item {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    width: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #495057;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+}
+
+.info-value {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #212529;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.info-value.main-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.info-value.weakness {
+    color: #dc3545;
+}
+
+.info-value.strength {
+    color: #007bff;
+}
+
+.info-value.blessing {
+    color: #FFD700;
+    font-weight: 700;
+}
+
+.owned {
+    color: #28a745;
+    font-weight: 700;
+}
+
+.not-owned {
+    color: #6c757d;
+}
+
+.ownership-item {
+    margin-top: 5px;
+    padding-top: 15px;
+    border-top: 2px solid #2c3e50;
+}
+
+/* 은퇴한 정령 기록 섹션 */
+.retired-spirits-section {
+    margin-top: 80px;
+    padding-top: 50px;
+    border-top: 3px solid rgba(168, 230, 207, 0.3);
+}
+
+.section-title {
+    font-size: 36px;
+    color: #A8E6CF;
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #A8E6CF, #87CEEB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.retired-spirits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 30px;
+}
+
+.retired-id-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 3px solid #dc3545;
+    border-radius: 12px;
+    padding: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(220, 53, 69, 0.2);
+    overflow: hidden;
+}
+
+.retired-id-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(220, 53, 69, 0.3);
+}
+
+.retired-id-card .id-card-header {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .spirit-types-grid,
+    .retired-spirits-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .id-card-body {
+        flex-direction: column;
+    }
+    
+    .id-card-left {
+        width: 100%;
+        align-items: center;
+    }
+    
+    .codex-header h1 {
+        font-size: 36px;
+    }
+    
+    .back-btn {
+        position: relative;
+        transform: none;
+        margin-bottom: 20px;
+    }
+}

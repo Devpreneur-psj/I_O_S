@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정령 생성 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/spirit-create.css}">
+</head>
+<body>
+    <div class="spirit-create-container">
+        <!-- 배경 -->
+        <div class="background-layer">
+            <div class="magical-particles"></div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-wrapper">
+            <div class="spirit-create-box">
+                <h1 class="title">정령 생성</h1>
+                <p class="subtitle">새로운 정령을 생성할 수 있습니다</p>
+                
+                <!-- 소유 현황 -->
+                <div class="spirit-count-info" th:if="${canCreate != null}">
+                    <p>소유 정령: <span th:text="${currentCount}">0</span> / <span th:text="${maxCount}">1</span></p>
+                </div>
+
+                <!-- 에러 메시지 -->
+                <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+                <!-- 정령 타입 선택 -->
+                <div class="spirit-type-selection" th:if="${canCreate != null and canCreate and availableTypes != null and !availableTypes.empty}">
+                    <form th:action="@{/spirit/create}" method="post">
+                        <div class="spirit-types-grid">
+                            <div class="spirit-type-card" th:each="type : ${availableTypes}">
+                                <input type="radio" 
+                                       name="spiritTypeCode" 
+                                       th:id="${'type-' + type.typeCode}"
+                                       th:value="${type.typeCode}"
+                                       required>
+                                <label th:for="${'type-' + type.typeCode}">
+                                    <div class="type-name" th:text="${type.typeName}">불의 정령</div>
+                                    <div class="type-evolution" th:if="${type.firstEvolutionName != null}">
+                                        <span th:text="${type.baseStageName}">불의 정령</span> → 
+                                        <span th:text="${type.firstEvolutionName}">마그마의 정령</span> → 
+                                        <span th:text="${type.secondEvolutionName}">이그리트</span>
+                                    </div>
+                                    <div class="type-rare" th:if="${type.isRare}">
+                                        <span class="rare-badge">희귀</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 정령 이름 입력 -->
+                        <div class="name-input">
+                            <label for="spiritName">정령 이름 (선택사항)</label>
+                            <input type="text" 
+                                   id="spiritName" 
+                                   name="name" 
+                                   placeholder="이름을 입력하세요 (미입력 시 기본 이름 사용)"
+                                   maxlength="50">
+                        </div>
+
+                        <!-- 생성 버튼 -->
+                        <button type="submit" class="create-button">
+                            <span class="btn-icon">✨</span>
+                            <span>정령 생성</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 생성 불가 메시지 -->
+                <div class="cannot-create" th:if="${canCreate == null or !canCreate}">
+                    <p>더 이상 정령을 생성할 수 없습니다.</p>
+                    <p class="hint">레벨을 올려서 더 많은 정령을 소유하세요!</p>
+                    <p class="hint">Lv.2: 1마리, Lv.4: 2마리, Lv.8: 3마리, Lv.16: 5마리</p>
+                </div>
+
+                <!-- 뒤로가기 버튼 -->
+                <div class="back-button">
+                    <a href="/world-tree/core" class="back-link">← 세계수의 심장으로</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

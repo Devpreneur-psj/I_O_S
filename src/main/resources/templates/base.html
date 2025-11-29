@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} ?: 'SOI'">SOI</title>
+    <!-- 공통 모달 드래그 스크립트 -->
+    <script th:src="@{/js/modal-draggable.js}" defer></script>
+</head>
+<body>
+    <!-- 각 페이지의 내용이 여기에 들어갑니다 -->
+    <div th:replace="~{::content}"></div>
+</body>
+</html>
+

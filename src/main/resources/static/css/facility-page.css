@@ -1,0 +1,221 @@
+/* 시설 페이지 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    color: #fff;
+    padding: 20px;
+}
+
+.facility-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.facility-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 20px;
+    background: rgba(168, 230, 207, 0.2);
+    border: 1px solid rgba(168, 230, 207, 0.5);
+    border-radius: 8px;
+    color: #A8E6CF;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(168, 230, 207, 0.3);
+    transform: translateY(-50%) translateX(-3px);
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.facility-icon {
+    font-size: 80px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.facility-header h1 {
+    font-size: 42px;
+    background: linear-gradient(135deg, #A8E6CF, #87CEEB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+    max-width: 600px;
+}
+
+.facility-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.coming-soon-box {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.coming-soon-icon {
+    font-size: 100px;
+    margin-bottom: 30px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.coming-soon-box h2 {
+    font-size: 32px;
+    color: #A8E6CF;
+    margin-bottom: 20px;
+}
+
+.coming-soon-box p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+}
+
+.hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    font-style: italic;
+}
+
+.info-section {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    border: 2px solid rgba(168, 230, 207, 0.3);
+    padding: 30px;
+}
+
+.info-section h3 {
+    font-size: 24px;
+    color: #A8E6CF;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(168, 230, 207, 0.3);
+}
+
+.info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid rgba(168, 230, 207, 0.2);
+}
+
+.info-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.info-value {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    text-align: right;
+    flex: 1;
+    margin-left: 20px;
+}
+
+.info-value.status {
+    color: #FFD700;
+    font-weight: 600;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .facility-header h1 {
+        font-size: 32px;
+    }
+
+    .facility-icon {
+        font-size: 60px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .coming-soon-box {
+        padding: 40px 15px;
+    }
+
+    .coming-soon-icon {
+        font-size: 80px;
+    }
+
+    .coming-soon-box h2 {
+        font-size: 24px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .info-value {
+        margin-left: 0;
+        text-align: left;
+    }
+}
+

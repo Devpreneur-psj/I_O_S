@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>월드맵 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/world.css?v=7}">
+    <link rel="stylesheet" th:href="@{/css/tutorial.css}">
+</head>
+<body>
+    <div class="world-background">
+        <!-- 세계수 배경 이미지 -->
+        <div class="background-image"></div>
+        
+        <!-- 플랫폼 슬롯들 (카테고리만 표시) -->
+        <div class="slot-container">
+            <!-- 세계수의 심장 (메인 허브) - 가운데 중앙 -->
+            <div class="village-slot main-hub" 
+                 data-category-id="world_heart" 
+                 onclick="window.location.href='/world-tree/heart'"
+                 th:classappend="${spiritCreationUnlocked != null and spiritCreationUnlocked} ? 'spirit-creation-unlocked'">
+                <img src="/images/world-heart.png?v=2" alt="" class="world-heart-image" aria-hidden="true">
+                <div class="slot-label">세계수의 심장</div>
+                <!-- 정령 생성 해금 알림 - 숨김 처리 -->
+                <div class="unlock-badge" 
+                     th:if="${spiritCreationUnlocked != null and spiritCreationUnlocked}"
+                     style="display: none !important; visibility: hidden; opacity: 0;">
+                    <span class="unlock-icon">✨</span>
+                    <span class="unlock-text">정령 생성 해금!</span>
+                </div>
+            </div>
+            
+            <!-- 정령 생성 바로가기 (레벨 2 이상) - 숨김 처리 -->
+            <div class="spirit-creation-quick-access" 
+                 th:if="${spiritCreationUnlocked != null and spiritCreationUnlocked}"
+                 style="display: none !important; visibility: hidden;"
+                 onclick="window.location.href='/spirit/create'">
+                <div class="quick-access-icon">✨</div>
+                <div class="quick-access-label">정령 생성</div>
+            </div>
+
+            <!-- 🏥 관리 & 시스템 (12시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="management_system" 
+                 style="left: 50%; top: 15%;">
+                <div class="slot-icon">🏥</div>
+                <div class="slot-label">관리 & 시스템</div>
+            </div>
+
+            <!-- 정령대학교 (2시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="growth_research" 
+                 style="left: 75%; top: 25%;">
+                <div class="slot-icon">
+                    <img src="/images/SOU_background.png" alt="정령대학교" class="category-icon-image">
+                </div>
+                <div class="slot-label">정령대학교</div>
+            </div>
+
+            <!-- ⚔️ 전투 & 모험 (4시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="combat_adventure" 
+                 style="left: 85%; top: 50%;">
+                <div class="slot-icon">⚔️</div>
+                <div class="slot-label">전투 & 모험</div>
+            </div>
+
+            <!-- 💛 커뮤니티 & 소셜 (6시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="community_social" 
+                 style="left: 50%; top: 85%;">
+                <div class="slot-icon">💛</div>
+                <div class="slot-label">커뮤니티 & 소셜</div>
+            </div>
+
+            <!-- 🏡 기본 마을 및 생활 (8시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="village_life" 
+                 style="left: 15%; top: 75%;">
+                <div class="slot-icon">🏡</div>
+                <div class="slot-label">기본 마을 및 생활</div>
+            </div>
+
+            <!-- 🛒 상점 & 경제 활동 (10시 방향) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="shop_economy" 
+                 style="left: 20%; top: 30%;">
+                <div class="slot-icon">🛒</div>
+                <div class="slot-label">상점 & 경제 활동</div>
+            </div>
+
+            <!-- 🎪 이벤트 & 미니게임 (중앙 왼쪽) -->
+            <div class="village-slot category-slot" 
+                 data-category-id="event_minigame" 
+                 style="left: 30%; top: 50%;">
+                <div class="slot-icon">🎪</div>
+                <div class="slot-label">이벤트 & 미니게임</div>
+            </div>
+        </div>
+
+        <!-- 상단 헤더 (로그아웃 등) -->
+        <div class="world-header">
+            <div class="user-info" sec:authorize="isAuthenticated()">
+                <span class="username" sec:authentication="name"></span>
+            </div>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-btn">로그아웃</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 모달 오버레이 (카테고리 클릭 시 표시) -->
+    <div id="categoryModal" class="modal-overlay">
+        <div class="modal-backdrop" onclick="closeCategoryModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">시설 선택</h2>
+                <button class="modal-close-btn" onclick="closeCategoryModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 하위 시설들이 여기에 동적으로 추가됨 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 튜토리얼 오버레이 (조건부 표시) -->
+    <div th:if="${showTutorial != null and showTutorial}" id="tutorialContainer"></div>
+
+    <script th:src="@{/js/world-state.js}"></script>
+    <script th:src="@{/js/modal-draggable.js}"></script>
+    <script th:src="@{/js/tutorial.js}"></script>
+    <script th:src="@{/js/world.js?v=11}"></script>
+</body>
+</html>

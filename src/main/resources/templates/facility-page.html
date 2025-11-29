@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${facilityName} + ' - SOI'">시설 - SOI</title>
+    <link rel="stylesheet" th:href="@{/css/facility-page.css}">
+</head>
+<body>
+    <div class="facility-container">
+        <div class="facility-header">
+            <button class="back-btn" onclick="window.location.href='/world'">← 뒤로</button>
+            <div class="header-content">
+                <div class="facility-icon" th:text="${facilityIcon}">🏛️</div>
+                <h1 th:text="${facilityName}">시설 이름</h1>
+                <p class="subtitle" th:text="${facilityDescription}">시설 설명</p>
+            </div>
+        </div>
+
+        <div class="facility-content">
+            <div class="coming-soon-box">
+                <div class="coming-soon-icon">🚧</div>
+                <h2>준비 중입니다</h2>
+                <p>이 시설은 현재 개발 중입니다.</p>
+                <p class="hint">곧 만나볼 수 있을 예정입니다!</p>
+            </div>
+
+            <div class="info-section">
+                <h3>시설 정보</h3>
+                <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">시설명:</span>
+                        <span class="info-value" th:text="${facilityName}">시설 이름</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">설명:</span>
+                        <span class="info-value" th:text="${facilityDescription}">시설 설명</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">상태:</span>
+                        <span class="info-value status">개발 예정</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

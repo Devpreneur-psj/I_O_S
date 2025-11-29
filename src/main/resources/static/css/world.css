@@ -1,0 +1,752 @@
+/* 월드맵 스타일 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 세계수 배경 */
+.world-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/background.png');
+    /* 세계수 이미지가 있다면 아래 주석을 해제하고 위 줄을 주석 처리하세요 */
+    /* background-image: url('/images/world-tree.png'); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: 0;
+}
+
+/* 그라데이션 오버레이 (선택적) */
+.background-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 235, 0.05) 0%,
+        rgba(168, 230, 207, 0.08) 50%,
+        rgba(135, 206, 235, 0.05) 100%
+    );
+    pointer-events: none;
+}
+
+/* 슬롯 컨테이너 */
+.slot-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* 정령 마을 슬롯 */
+.village-slot {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(135, 206, 235, 0.5);
+    box-shadow: 
+        0 0 20px rgba(135, 206, 235, 0.4),
+        0 0 40px rgba(168, 230, 207, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+    animation: float 3s ease-in-out infinite;
+}
+
+/* 세계수의 심장 (메인 허브) - 더 크고 눈에 띄게, 항상 화면 중앙 */
+.village-slot.main-hub {
+    width: 160px;
+    height: 160px;
+    border: 4px solid rgba(168, 230, 207, 0.8);
+    box-shadow: 
+        0 0 30px rgba(168, 230, 207, 0.6),
+        0 0 60px rgba(135, 206, 235, 0.5),
+        0 0 90px rgba(168, 230, 207, 0.3),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+    background-color: transparent;
+    animation: pulse 2s ease-in-out infinite;
+    z-index: 15;
+    position: fixed !important;
+    left: 50vw !important;
+    top: 50vh !important;
+    margin: 0 !important;
+    padding-bottom: 35px;
+    overflow: hidden;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+.village-slot.main-hub .world-heart-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.village-slot.main-hub .slot-icon {
+    display: none;
+}
+
+.village-slot.main-hub .slot-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 8px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    white-space: nowrap;
+    text-indent: 0;
+    overflow: visible;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1) !important;
+        box-shadow: 
+            0 0 30px rgba(168, 230, 207, 0.6),
+            0 0 60px rgba(135, 206, 235, 0.5),
+            0 0 90px rgba(168, 230, 207, 0.3),
+            inset 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05) !important;
+        box-shadow: 
+            0 0 40px rgba(168, 230, 207, 0.8),
+            0 0 80px rgba(135, 206, 235, 0.7),
+            0 0 120px rgba(168, 230, 207, 0.5),
+            inset 0 0 40px rgba(255, 255, 255, 0.3);
+    }
+}
+
+
+.village-slot:nth-child(odd) {
+    animation-delay: 0s;
+}
+
+.village-slot:nth-child(even) {
+    animation-delay: 1.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-10px);
+    }
+}
+
+/* 슬롯 아이콘 */
+.slot-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 카테고리 아이콘 이미지 */
+.category-icon-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+/* 슬롯 라벨 */
+.slot-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 8px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+/* 슬롯 호버 효과 */
+.village-slot:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    border-color: rgba(135, 206, 235, 0.9);
+    box-shadow: 
+        0 0 30px rgba(135, 206, 235, 0.7),
+        0 0 60px rgba(168, 230, 207, 0.5),
+        0 0 80px rgba(135, 206, 235, 0.3),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+    animation: none;
+}
+
+/* 메인 허브 호버 효과 */
+.village-slot.main-hub:hover {
+    transform: translate(-50%, -50%) scale(1.2) !important;
+    border-color: rgba(168, 230, 207, 1);
+    box-shadow: 
+        0 0 50px rgba(168, 230, 207, 0.9),
+        0 0 100px rgba(135, 206, 235, 0.7),
+        0 0 150px rgba(168, 230, 207, 0.5),
+        inset 0 0 50px rgba(255, 255, 255, 0.3);
+    background: rgba(168, 230, 207, 0.25);
+    left: 50vw !important;
+    top: 50vh !important;
+}
+
+.village-slot:hover .slot-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.village-slot:hover .category-icon-image {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.village-slot:hover .slot-label {
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 1);
+}
+
+/* 슬롯 클릭 효과 */
+.village-slot:active {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* 상단 헤더 */
+.world-header {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.user-info {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.username {
+    color: rgba(135, 206, 235, 1);
+}
+
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #87CEEB 0%, #A8E6CF 100%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 2px 8px rgba(135, 206, 235, 0.4),
+        0 1px 4px rgba(168, 230, 207, 0.3);
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 12px rgba(135, 206, 235, 0.5),
+        0 2px 6px rgba(168, 230, 207, 0.4);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 0;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(135, 206, 235, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: slideUp 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 25px 30px;
+    border-bottom: 1px solid rgba(135, 206, 235, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.1) 0%, rgba(168, 230, 207, 0.1) 100%);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #87CEEB, #A8E6CF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #6B8E9F;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #FF6B6B;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    flex: 1;
+}
+
+/* 모달 내 시설 카드 */
+.facility-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(135, 206, 235, 0.3);
+    box-shadow: 
+        0 4px 15px rgba(135, 206, 235, 0.2),
+        0 2px 8px rgba(168, 230, 207, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.facility-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: rgba(135, 206, 235, 0.7);
+    box-shadow: 
+        0 8px 25px rgba(135, 206, 235, 0.4),
+        0 4px 15px rgba(168, 230, 207, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.facility-card:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.facility-icon {
+    font-size: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.facility-card:hover .facility-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.facility-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4A5568;
+    margin: 0;
+}
+
+.facility-card:hover .facility-name {
+    color: #2D3748;
+}
+
+.facility-description {
+    font-size: 12px;
+    color: #718096;
+    margin-top: 8px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.facility-card:hover .facility-description {
+    color: #4A5568;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .village-slot {
+        width: 100px;
+        height: 100px;
+    }
+
+    .slot-icon {
+        font-size: 40px;
+    }
+
+    .slot-label {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+
+    .world-header {
+        top: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .user-info {
+        font-size: 12px;
+    }
+
+    .logout-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-header {
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .facility-card {
+        padding: 15px;
+    }
+
+    .facility-icon {
+        font-size: 40px;
+    }
+
+    .facility-name {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .village-slot {
+        width: 80px;
+        height: 80px;
+    }
+
+    .slot-icon {
+        font-size: 32px;
+        margin-bottom: 4px;
+    }
+
+    .slot-label {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+}
+
+/* 태블릿 세로 모드 */
+@media (max-width: 1024px) and (orientation: portrait) {
+    .village-slot {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* 태블릿 가로 모드 */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .village-slot {
+        width: 115px;
+        height: 115px;
+    }
+}
+
+/* 정령 생성 해금 배지 - 기본적으로 숨김 */
+.unlock-badge {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 165, 0, 0.9));
+    border: 2px solid rgba(255, 215, 0, 1);
+    border-radius: 20px;
+    padding: 8px 16px;
+    display: none !important;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    z-index: 20;
+    box-shadow: 
+        0 4px 15px rgba(255, 215, 0, 0.6),
+        0 0 30px rgba(255, 215, 0, 0.4);
+    animation: unlockBadgePulse 2s ease-in-out infinite;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes unlockBadgePulse {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+        box-shadow: 
+            0 4px 15px rgba(255, 215, 0, 0.6),
+            0 0 30px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+        box-shadow: 
+            0 6px 20px rgba(255, 215, 0, 0.8),
+            0 0 40px rgba(255, 215, 0, 0.6);
+    }
+}
+
+.unlock-icon {
+    font-size: 20px;
+    animation: twinkle 1.5s ease-in-out infinite;
+}
+
+.unlock-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* 정령 생성 해금 상태 */
+.village-slot.main-hub.spirit-creation-unlocked {
+    border-color: rgba(255, 215, 0, 0.8);
+    box-shadow: 
+        0 0 40px rgba(255, 215, 0, 0.6),
+        0 0 80px rgba(255, 165, 0, 0.5),
+        0 0 120px rgba(255, 215, 0, 0.3);
+}
+
+.village-slot.main-hub.spirit-creation-unlocked .unlock-badge {
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* 정령 생성 바로가기 버튼 - 기본적으로 숨김 */
+.spirit-creation-quick-access {
+    position: absolute;
+    left: 60%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.3));
+    border: 3px solid rgba(255, 215, 0, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: none;
+    display: none !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    z-index: 12;
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.5),
+        0 0 60px rgba(255, 165, 0, 0.3);
+    animation: quickAccessFloat 3s ease-in-out infinite;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.spirit-creation-quick-access.show {
+    display: flex !important;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+
+@keyframes quickAccessFloat {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-10px);
+    }
+}
+
+.spirit-creation-quick-access:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    border-color: rgba(255, 215, 0, 1);
+    box-shadow: 
+        0 0 40px rgba(255, 215, 0, 0.8),
+        0 0 80px rgba(255, 165, 0, 0.6);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 165, 0, 0.5));
+}
+
+.quick-access-icon {
+    font-size: 36px;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.quick-access-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
